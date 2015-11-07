@@ -6,7 +6,7 @@
 /*   By: y0ja <y0ja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 18:01:14 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/07 02:26:35 by y0ja             ###   ########.fr       */
+/*   Updated: 2015/11/07 03:32:10 by y0ja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,23 @@ void		Env::_updateSize(void) {
 	getmaxyx(stdscr, this->_mapSizeY, this->_mapSizeX);
 }
 
-void		Env::_drawEntities( void ) const {
+# include <stdlib.h>
+
+void		Env::_drawEntities( void ) {
 	// Player
 	mvprintw(this->_player->getPosY(), this->_player->getPosX(), ">");
 	// Enemy
-	for (int i = 0; this->_entities[i]; i++) {
-		mvprintw(this->_entities[i]->getPosY(), this->_entities[i]->getPosX(), ">");
+	for (int i = 0, j = 0; this->_entities[i]; i++) {
+		mvprintw(this->_entities[i]->getPosY(), this->_entities[i]->getPosX(), ".");
+		if (this->_entities[i]->incPosXY(1, 0) == -1) {
+			delete this->_entities[i];
+			this->_entities[i] = NULL;
+			for (j = i; this->_entities[j+1]; j++) {
+				this->_entities[j] = this->_entities[j+1];
+			}
+			this->_entities[j] = NULL;
+			return ;
+		}
 	}
 }
 
@@ -100,7 +111,7 @@ void		Env::_drawCorners(void) const {
 	}
 }
 
-int				Env::_keyHook(void) const {
+int				Env::_keyHook(void) {
 	int		ch;
 	int moved = 0;
 
@@ -117,6 +128,11 @@ int				Env::_keyHook(void) const {
 			else if (ch == K_RIGHT)
 				this->_player->incPosXY(1, 0);
 			moved = 1;
+		}
+		else if (ch == K_SPACE) {
+			GameEntity *bullet = new GameEntity(this->_player->getPosX()+1, this->_player->getPosY());
+			bullet->setMaxXY(this->_mapSizeX, this->_mapSizeX);
+			addEntity(*bullet);
 		}
 		else if (ch == ECHAP)
 			return (-1);

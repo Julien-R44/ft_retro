@@ -6,7 +6,7 @@
 /*   By: y0ja <y0ja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 18:01:39 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/07 02:26:18 by y0ja             ###   ########.fr       */
+/*   Updated: 2015/11/07 03:05:08 by y0ja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ class Env {
 
 	typedef enum	e_keys {
 		ECHAP = 27,
+		K_SPACE = 32,
 		K_RIGHT = 261,
 		K_LEFT = 260,
 		K_UP = 259,
@@ -60,9 +61,9 @@ private:
 
 	void			_timeHandler( void );
 	void			_updateSize( void );
-	void			_drawEntities( void ) const;
+	void			_drawEntities( void );
 	void			_drawCorners( void ) const;
-	int				_keyHook( void ) const;
+	int				_keyHook( void );
 };
 
 

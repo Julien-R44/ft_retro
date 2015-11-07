@@ -6,7 +6,7 @@
 /*   By: y0ja <y0ja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 19:16:47 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/07 02:24:22 by y0ja             ###   ########.fr       */
+/*   Updated: 2015/11/07 02:54:25 by y0ja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@
 class GameEntity {
 
 public:
-	GameEntity( int posx, int posy , int maxX, int maxY);
+	GameEntity( int posx, int posy );
 	GameEntity( GameEntity const & src );
 	~GameEntity( void );
 
 	void			setMaxXY( int x, int y );
 
-	void			incPosXY( int x, int y );
-	void			setPosXY( int x, int y );
+	int				incPosXY( int x, int y );
+	int				setPosXY( int x, int y );
 
 	int				getPosX( void ) const ;
 	int				getPosY( void ) const ;
