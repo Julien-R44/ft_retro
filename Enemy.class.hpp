@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Enemy.class.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: y0ja <y0ja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/06 18:01:40 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/07 06:24:01 by y0ja             ###   ########.fr       */
+/*   Created: 2015/11/07 04:16:46 by y0ja              #+#    #+#             */
+/*   Updated: 2015/11/07 05:55:21 by y0ja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <curses.h>
-#include "Env.class.hpp"
-#include "GameEntity.class.hpp"
-#include "Enemy.class.hpp"
+#ifndef ENEMY_CLASS_HPP
+# define ENEMY_CLASS_HPP
 
-int			main(void) {
-	Env		env;
-	GameEntity one(env.getSizeX() / 2, env.getSizeY() - 5);
-	one.setMaxXY(env.getSizeX(), env.getSizeY());
-	env.addPlayer(one);
+# include <math.h>
+# include <stdlib.h>
+# include "GameEntity.class.hpp"
 
-	while (77) {
-		if (env.updateAll() == -1)
-			break ;
-	}
-	return (0);
-}
+class Enemy : public GameEntity {
+
+public:
+	// First params is X = position pop, and y = max height
+	Enemy(int x, int y);
+	Enemy(Enemy const & src);
+	~Enemy();
+
+	Enemy &		operator=( Enemy const & src );
+
+};
+
+#endif

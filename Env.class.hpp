@@ -6,7 +6,7 @@
 /*   By: y0ja <y0ja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 18:01:39 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/07 03:05:08 by y0ja             ###   ########.fr       */
+/*   Updated: 2015/11/07 06:22:14 by y0ja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 # include <curses.h>
 # include "Logger.class.hpp"
 # include "GameEntity.class.hpp"
+# include "Enemy.class.hpp"
 
 # define MAX_ENTITIES 512
+# define MAX_ENEMIES 64
 
 class Env {
 
@@ -35,11 +37,12 @@ class Env {
 	}				t_keys;
 
 public:
-	Env();
+	Env( void );
 	Env( Env const & src );
-	~Env();
+	~Env( void );
 
 
+	void			addEnemy( Enemy & enemy );
 	void			addPlayer( GameEntity & entity );
 	void			addEntity( GameEntity & entity );
 	int				updateAll( void );
@@ -53,16 +56,26 @@ public:
 private:
 	GameEntity		*_player;
 	GameEntity		*_entities[MAX_ENTITIES];
+	Enemy			*_enemies[MAX_ENEMIES];
 	Logger			_logger;
 	int				_mapSizeX;
 	int				_mapSizeY;
 	clock_t			_oldTime;
+	clock_t			_newTime;
 	static const int _fps;
 
-	void			_timeHandler( void );
+	// Update
+	void			_updateEntities( void );
+	void			_updateEnemies( void );
 	void			_updateSize( void );
-	void			_drawEntities( void );
+
+
+	// Draw
+	void			_drawEntities( void ) const;
 	void			_drawCorners( void ) const;
+	void			_timeHandler( void ) const;
+
+	void			_genEnemy( void );
 	int				_keyHook( void );
 };
 

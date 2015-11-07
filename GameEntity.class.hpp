@@ -6,7 +6,7 @@
 /*   By: y0ja <y0ja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 19:16:47 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/07 02:54:25 by y0ja             ###   ########.fr       */
+/*   Updated: 2015/11/07 04:29:18 by y0ja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ public:
 
 	GameEntity &	operator=( GameEntity const & src );
 
-private:
+protected:
 	int			_posX;
 	int			_posY;
 	int			_maxX;

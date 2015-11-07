@@ -1,13 +1,15 @@
 NAME = ft_retro
+CFLAGS = -Wall -Wextra -Werror
 SRCS = Env.class.cpp \
 			GameEntity.class.cpp \
 			Logger.class.cpp \
+			Enemy.class.cpp \
 			main.cpp
 
 all: make
 
 make:
-	g++ -Wall -Wextra -Werror $(SRCS) -lncurses -o $(NAME)
+	g++ $(FLAGS) $(SRCS) -lncurses -o $(NAME)
 
 re: all
 

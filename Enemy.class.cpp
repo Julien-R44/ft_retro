@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Enemy.class.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: y0ja <y0ja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/06 18:01:40 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/07 06:24:01 by y0ja             ###   ########.fr       */
+/*   Created: 2015/11/07 04:16:46 by y0ja              #+#    #+#             */
+/*   Updated: 2015/11/07 05:15:05 by y0ja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <curses.h>
-#include "Env.class.hpp"
-#include "GameEntity.class.hpp"
 #include "Enemy.class.hpp"
 
-int			main(void) {
-	Env		env;
-	GameEntity one(env.getSizeX() / 2, env.getSizeY() - 5);
-	one.setMaxXY(env.getSizeX(), env.getSizeY());
-	env.addPlayer(one);
+Enemy::Enemy(int x, int y): GameEntity(x-1, rand() % (y - 1) + 1) {
+// Enemy::Enemy(int x, int y): GameEntity(10, 5) {
+	// (void)x;
+	// (void)y;
+	// this->setPosXY(10, 5);
+	return ;
+}
 
-	while (77) {
-		if (env.updateAll() == -1)
-			break ;
-	}
-	return (0);
+Enemy::Enemy(Enemy const & src): GameEntity(0, 0) {
+	*this = src;
+}
+
+Enemy::~Enemy( void ) {
+
+}
+
+Enemy &		Enemy::operator=( Enemy const & src ) {
+	Enemy::operator=(src);
+	return *this;
 }
