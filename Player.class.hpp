@@ -1,29 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Player.class.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: y0ja <y0ja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/06 18:01:40 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/07 07:38:46 by y0ja             ###   ########.fr       */
+/*   Created: 2015/11/07 06:39:04 by y0ja              #+#    #+#             */
+/*   Updated: 2015/11/07 08:05:14 by y0ja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <curses.h>
-#include "Env.class.hpp"
-#include "GameEntity.class.hpp"
-#include "Enemy.class.hpp"
-#include "Player.class.hpp"
-#include "HUD.class.hpp"
+#ifndef PLAYER_CLASS_HPP
+# define PLAYER_CLASS_HPP
 
-int			main(void) {
-	Env		env;
+# include "GameEntity.class.hpp"
 
-	while (77) {
-		if (env.updateAll() == -1)
-			break ;
-	}
-	return (0);
-}
+class Player: public GameEntity {
+
+public:
+	Player( int x, int y );
+	Player(Player const & src);
+	~Player( void );
+
+	void			incAmmo(int amount);
+	int				getAmmo(void) const;
+
+	Player &		operator=( Player const & src );
+
+	int			shoots;
+	int			kills;
+	int			ammo;
+
+private:
+
+};
+
+#endif

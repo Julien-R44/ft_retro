@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Player.class.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: y0ja <y0ja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/06 18:01:40 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/07 07:38:46 by y0ja             ###   ########.fr       */
+/*   Created: 2015/11/07 06:39:04 by y0ja              #+#    #+#             */
+/*   Updated: 2015/11/07 08:06:16 by y0ja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <curses.h>
-#include "Env.class.hpp"
-#include "GameEntity.class.hpp"
-#include "Enemy.class.hpp"
 #include "Player.class.hpp"
-#include "HUD.class.hpp"
 
-int			main(void) {
-	Env		env;
+Player::Player( int posX, int posY ) : GameEntity(posX, posY), shoots(0), kills(0), ammo(0) {
 
-	while (77) {
-		if (env.updateAll() == -1)
-			break ;
-	}
-	return (0);
+}
+
+Player::Player( Player const & src ) : GameEntity(0, 0) {
+	*this = src;
+}
+
+Player::~Player( void ) {
+	return ;
+}
+
+Player &		Player::operator=( Player const & src ) {
+	GameEntity::operator=(src);
+	return *this;
 }

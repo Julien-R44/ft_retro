@@ -4,6 +4,8 @@ SRCS = Env.class.cpp \
 			GameEntity.class.cpp \
 			Logger.class.cpp \
 			Enemy.class.cpp \
+			Player.class.cpp \
+			HUD.class.cpp \
 			main.cpp
 
 all: make

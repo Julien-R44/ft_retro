@@ -6,7 +6,7 @@
 /*   By: y0ja <y0ja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 18:01:14 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/07 06:23:05 by y0ja             ###   ########.fr       */
+/*   Updated: 2015/11/07 08:05:28 by y0ja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <iostream>
 #include "Env.class.hpp"
 
-Env::Env(void) : _logger("debug.log") {
+Env::Env(void) : _hud(160, 20), _logger("debug.log") {
 	initscr();
 	cbreak();
 	noecho();
@@ -22,50 +22,51 @@ Env::Env(void) : _logger("debug.log") {
 	keypad(stdscr, TRUE);
 	curs_set(FALSE);
 	srand(time(NULL));
-	this->_updateSize();
 	for (int i = 0; i < MAX_ENEMIES; i++) { this->_enemies[i] = 0; }
-	for (int i = 0; i < MAX_ENTITIES; i++) { this->_entities[i] = 0; }
+	for (int i = 0; i < MAX_BULLETS; i++) { this->_bullets[i] = 0; }
+	// ADD PLAYER
+	Player *player = new Player(_hud.maxX / 2, _hud.maxY / 2);
+	player->setMaxMinXY(_hud.maxX, _hud.maxY, _hud.minX, _hud.minY);
+	this->addPlayer(*player);
 	return ;
 }
 
-Env::Env(Env const & src) : _logger("debug.log") {
+Env::Env(Env const & src) : _hud(50, 20), _logger("debug.log") {
 	*this = src;
 	return ;
 }
 
 Env::~Env( void ) {
 	endwin();
+	delete this->_player;
 	return ;
 }
 
-Env	&		Env::operator=( Env const & src ) {
+Env	&			Env::operator=( Env const & src ) {
 	// TO DO
 	(void)src;
 	return *this;
 }
 
-/* GETTERS */
-int		Env::getSizeX( void ) const { return this->_mapSizeX; }
-int		Env::getSizeY( void ) const { return this->_mapSizeY; }
-
 /* PUBLICS METHODS */
-void		Env::addEnemy( Enemy & enemy ) {
+void			Env::addEnemy( Enemy & enemy ) {
 	int i = 0;
 	while (this->_enemies[i]) i++;
 	this->_enemies[i] = &enemy;
 }
-void		Env::addEntity( GameEntity & entity ) {
+void			Env::addBullet( GameEntity & entity ) {
 	int i = 0;
-	while (this->_entities[i]) i++;
-	this->_entities[i] = &entity;
+	while (this->_bullets[i]) i++;
+	this->_bullets[i] = &entity;
 }
-void		Env::addPlayer( GameEntity & entity ) {
+
+void			Env::addPlayer( Player & entity ) {
 	this->_player = &entity;
 }
 
-int			Env::updateAll( void ) {
+int				Env::updateAll( void ) {
 	this->_oldTime = clock();
-	this->_updateSize();
+	this->_hud.displayInfo(*this->_player);
 	this->_genEnemy();
 	this->_updateEntities();
 	this->_updateEnemies();
@@ -80,37 +81,45 @@ int			Env::updateAll( void ) {
 }
 
 /* PRIVATES METHODS */
-void		Env::_updateSize(void) {
-	getmaxyx(stdscr, this->_mapSizeY, this->_mapSizeX);
-}
-
-void		Env::_updateEntities( void ) {
-	for (int i = 0, j = 0; this->_entities[i]; i++) {
-		if (this->_entities[i]->incPosXY(1, 0) == -1) {
-			delete this->_entities[i];
-			this->_entities[i] = NULL;
-			for (j = i; this->_entities[j+1]; j++) {
-				this->_entities[j] = this->_entities[j+1];
+void			Env::_updateEntities( void ) {
+	for (int i = 0, j = 0; this->_bullets[i]; i++) {
+		if (this->_bullets[i]->incPosXY(1, 0) == -1) {
+			delete this->_bullets[i];
+			this->_bullets[i] = NULL;
+			for (j = i; this->_bullets[j+1]; j++) {
+				this->_bullets[j] = this->_bullets[j+1];
 			}
-			this->_entities[j] = NULL;
+			this->_bullets[j] = NULL;
 			return ;
+		}
+		// Check collision
+		for (int k = 0, l = 0; this->_enemies[k]; k++) {
+			if (this->_bullets[i]->getPosX() == this->_enemies[k]->getPosX()
+			&& this->_bullets[i]->getPosY() == this->_enemies[k]->getPosY())
+			{
+				delete this->_enemies[k];
+				this->_enemies[k] = NULL;
+				for (l = k; this->_enemies[l+1]; l++) {
+					this->_enemies[l] = this->_enemies[l+1];
+				}
+				this->_enemies[l] = NULL;
+
+				this->_player->kills++;
+
+				// delete this->_bullets[i];
+				// this->_bullets[i] = NULL;
+				// for (j = i; this->_bullets[j+1]; j++) {
+				// 	this->_bullets[j] = this->_bullets[j+1];
+				// }
+				// this->_bullets[j] = NULL;
+
+			}
+
 		}
 	}
 }
 
-void		Env::_genEnemy( void ) {
-	static int frame = 0;
-	frame++;
-
-	if (frame == 60) {
-		Enemy *enemy = new Enemy(this->_mapSizeX-1, this->_mapSizeY);
-		enemy->setMaxXY(this->_mapSizeX, this->_mapSizeY);
-		addEnemy(*enemy);
-		frame = 0;
-	}
-}
-
-void		Env::_updateEnemies( void ) {
+void			Env::_updateEnemies( void ) {
 	static int 	frame = 0;
 	int			vecx = 0;
 
@@ -134,28 +143,40 @@ void		Env::_updateEnemies( void ) {
 	}
 }
 
-void		Env::_drawEntities( void ) const {
+void			Env::_genEnemy( void ) {
+	static int frame = 0;
+	frame++;
+
+	if (frame == 60) {
+		Enemy *enemy = new Enemy(_hud.maxX+1, _hud.maxY+1);
+		enemy->setMaxMinXY(_hud.maxX, _hud.maxY, _hud.minX, _hud.minY);
+		addEnemy(*enemy);
+		frame = 0;
+	}
+}
+
+void			Env::_drawEntities( void ) const {
 	int i;
 
 	mvprintw(this->_player->getPosY(), this->_player->getPosX(), ">");
-	for (i = 0; this->_entities[i]; i++)
-		mvprintw(this->_entities[i]->getPosY(), this->_entities[i]->getPosX(), ".");
+	for (i = 0; this->_bullets[i]; i++)
+		mvprintw(this->_bullets[i]->getPosY(), this->_bullets[i]->getPosX(), ".");
 	for (i = 0; this->_enemies[i]; i++)
 		mvprintw(this->_enemies[i]->getPosY(), this->_enemies[i]->getPosX(), "<");
 }
 
-void		Env::_drawCorners(void) const {
-	for (int i = 0; i < this->_mapSizeX; i++) {
-		mvprintw(0, i, "-");
-		mvprintw(this->_mapSizeY - 1, i, "-");
+void			Env::_drawCorners(void) const {
+	for (int i = this->_hud.minX; i < (this->_hud.minX + this->_hud.mapX); i++) {
+		mvprintw(this->_hud.getMapOffsetY(), i, "-");
+		mvprintw(_hud.mapY, i, "-");
 	}
-	for (int i = 0; i < this->_mapSizeX; i++) {
-		mvprintw(i, 0, "|");
-		mvprintw(i, this->_mapSizeX - 1, "|");
+	for (int i = this->_hud.getMapOffsetY(); i < (this->_hud.getMapOffsetY() + _hud.mapY); i++) {
+		mvprintw(i, this->_hud.minX, "|");
+		mvprintw(i, this->_hud.minX + this->_hud.mapX, "|");
 	}
 }
 
-void		Env::_timeHandler(void) const {
+void			Env::_timeHandler(void) const {
 	int delta = clock() - this->_oldTime;
 	if (delta < Env::_fps)
 		usleep(Env::_fps - delta);
@@ -182,8 +203,9 @@ int				Env::_keyHook(void) {
 		else if (ch == K_SPACE) {
 
 			GameEntity *bullet = new GameEntity(this->_player->getPosX()+1, this->_player->getPosY());
-			bullet->setMaxXY(this->_mapSizeX, this->_mapSizeX);
-			addEntity(*bullet);
+			bullet->setMaxMinXY(_hud.maxX, _hud.maxY, _hud.minX, _hud.minY);
+			addBullet(*bullet);
+			this->_player->shoots++;
 		}
 		else if (ch == ECHAP)
 			return (-1);

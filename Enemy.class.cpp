@@ -6,7 +6,7 @@
 /*   By: y0ja <y0ja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/07 04:16:46 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/07 05:15:05 by y0ja             ###   ########.fr       */
+/*   Updated: 2015/11/07 06:41:11 by y0ja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ Enemy::~Enemy( void ) {
 }
 
 Enemy &		Enemy::operator=( Enemy const & src ) {
-	Enemy::operator=(src);
+	GameEntity::operator=(src);
 	return *this;
 }
