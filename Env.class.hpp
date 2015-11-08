@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 18:01:39 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 05:24:32 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 06:12:21 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 # define MAX_BULLETS 512
 # define MAX_ENEMIES 64
-# define MAP_LIMITS _hud.maxX, _hud.maxY, _hud.minX, _hud.minY
+# define MAP_LIMITS _hud.maxX, _hud.maxY+1, _hud.minX, _hud.minY
 
 class Env {
 

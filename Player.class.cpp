@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/07 06:39:04 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 03:58:01 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 07:15:05 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 Player::Player( int posX, int posY ) :
 	GameEntity(posX, posY),
+	health(100),
 	life(5),
 	shoots(0),
 	kills(0),
@@ -38,6 +39,7 @@ Player &		Player::operator=( Player const & src ) {
 }
 
 void			Player::getKilled(void) {
+	this->health = 100;
 	this->life -= 1;
 	if (this->life < 0) {
 		endwin();

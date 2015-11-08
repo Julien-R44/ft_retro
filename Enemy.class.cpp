@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/07 04:16:46 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 05:57:30 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 06:08:15 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,4 @@ bool		Enemy::reload( void ) {
 	return false;
 }
 
-const int	Enemy::_reloadTime = 50;
+const int	Enemy::_reloadTime = 100;

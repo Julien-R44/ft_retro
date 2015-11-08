@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 18:01:14 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 05:59:54 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 07:14:37 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void			Env::_initCurses(void) {
 	init_pair(2, COLOR_MAGENTA, 0);
 	init_pair(3, COLOR_RED, 0);
 	init_pair(4, 0, COLOR_WHITE);
+	init_pair(5, 0, COLOR_RED);
 }
 
 
@@ -99,8 +100,17 @@ void			Env::_updateEntities( void ) {
 			return ;
 		}
 
+		// player
+		if (_bullets[i]->getPosX() == _player->getPosX() && _player->getPosY() == _bullets[i]->getPosY()) {
+			_player->health -= 20;
+			if (_player->health == 0) {
+				_player->getKilled();
+			}
+		}
+
 		// Check collision
 		for (int k = 0, l = 0; _enemies[k]; k++) {
+			// enemies
 			if (_bullets[i]->getPosX() == _enemies[k]->getPosX() && _bullets[i]->getPosY() == _enemies[k]->getPosY())
 			{
 				delete _enemies[k];	_enemies[k] = NULL;
@@ -212,6 +222,8 @@ int				Env::_keyHook(void) {
 		}
 		else if (ch == ECHAP)
 			return (-1);
+		// else if (ch == K_ONE)
+		// 	this->_player->health -= 25;
 	}
 	return (0);
 }

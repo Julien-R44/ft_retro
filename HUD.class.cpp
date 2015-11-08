@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/07 06:52:10 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 03:58:45 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 07:14:02 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ HUD & 			HUD::operator=( HUD const & src) {
 void			HUD::displayHUD(Player & player) const {
 	_displayInfo(player);
 	_displayBar(player);
-	// MAP
 	attron(COLOR_PAIR(4));
 	_drawSquare(mapX, mapY, _mapOffsetX, _mapOffsetY);
 	attroff(COLOR_PAIR(4));
@@ -64,7 +63,14 @@ void			HUD::_displayInfo(Player & player) const {
 }
 
 void			HUD::_displayBar(Player & player) const {
+	attron(COLOR_PAIR(4));
 	_drawSquare(mapX, 1, 30, maxY+2);
+	attroff(COLOR_PAIR(4));
+
+	attron(COLOR_PAIR(5));
+	_drawSquare(player.health * mapX / 100, 1, 30, maxY+2);
+	attroff(COLOR_PAIR(5));
+	mvprintw(maxY+1, 30, "Health: %d%%.", player.health);
 }
 
 void			HUD::_drawSquare(int x, int y, int offx, int offy) const {
