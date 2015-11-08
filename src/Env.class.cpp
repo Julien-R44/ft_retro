@@ -6,13 +6,17 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 18:01:14 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 08:21:20 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 11:45:40 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <iostream>
 #include "Env.class.hpp"
+
+int rand_a_b(int a, int b){
+    return rand()%(b-a) +a;
+}
 
 Env::Env(void) : _hud(100, 10) {
 	_initCurses();
@@ -22,7 +26,7 @@ Env::Env(void) : _hud(100, 10) {
 	for (int i = 0; i < MAX_BONUS; i++) { this->_bonus[i] = 0; }
 	// ADD PLAYER
 	Player *player = new Player(_hud.minX + 4, _hud.maxY / 2);
-	player->setMaxMinXY(_hud.maxX, _hud.maxY, _hud.minX, _hud.minY);
+	player->setMaxMinXY(MAP_LIMITS);
 	this->_player = player;
 	return ;
 }
@@ -62,7 +66,6 @@ void			Env::_initCurses(void) {
 	init_pair(6, COLOR_GREEN, 0);
 }
 
-
 /* PUBLICS METHODS */
 void			Env::addBonus( Bonus & bonus ) {
 	int i = 0;
@@ -83,9 +86,10 @@ int				Env::updateAll( void ) {
 	this->_oldTime = clock();
 	this->_hud.displayHUD(*this->_player);
 	this->_genEnemy();
-	// this->_genBonus();
+	this->_genBonus();
 	this->_updateEntities();
 	this->_updateEnemies();
+	this->_collisionsBonus();
 	this->_drawEntities();
 	if (this->_keyHook() == -1)
 		return (-1);
@@ -96,6 +100,33 @@ int				Env::updateAll( void ) {
 }
 
 /* PRIVATES METHODS */
+void			Env::_collisionsBonus( void ) {
+	int bonusType;
+
+	for (int i = 0, j = 0; _bonus[i]; i++) {
+		if (_player->getPosX() == _bonus[i]->getPosX() && _player->getPosY() == _bonus[i]->getPosY()) {
+
+			// Get time of bon
+
+			// Assign Bonus
+			bonusType = _bonus[i]->getBonusType();
+			if ( bonusType == B_LIFE)
+				_player->life += 1;
+			else if ( bonusType == B_HEAL )
+				_player->health = _player->health + 20 > 100 ? 100 : _player->health + 20;
+			else if ( bonusType == B_MONEY )
+				;
+
+			// Delete Bonus
+			delete _bonus[i]; _bonus[i] = NULL;
+			for (j = i; _bonus[j+1]; j++) { _bonus[j] = _bonus[j+1]; }
+			_bonus[j] = NULL;
+
+
+		}
+	}
+}
+
 void			Env::_updateEntities( void ) {
 
 	for (int i = 0, j = 0; _bullets[i]; i++) {
@@ -176,9 +207,9 @@ void			Env::_genEnemy( void ) {
 	static int frame = 0;
 	frame++;
 
-	if (frame == 10) {
+	if (frame == REP_ENEMY) {
 		Enemy *enemy = new Enemy(_hud.maxX+1, _hud.maxY+1);
-		enemy->setMaxMinXY(_hud.maxX, _hud.maxY, _hud.minX, _hud.minY);
+		enemy->setMaxMinXY(MAP_LIMITS);
 		addEnemy(*enemy);
 		frame = 0;
 	}
@@ -188,10 +219,11 @@ void			Env::_genBonus( void ) {
 	static int frame = 0;
 	frame++;
 
-	if (frame == 20) {
+	if (frame == REP_BONUS && Bonus::getNbInstance() < 4) {
 		Bonus *bonus = new Bonus(
-			rand() % (_hud.maxX - _hud.minX) + _hud.minX,
-			rand() % (_hud.maxY - _hud.minY) + _hud.minY
+			rand_a_b(_hud.minX, _hud.maxX),
+			rand_a_b(_hud.minY, _hud.maxY),
+			rand_a_b(1, 4)
 		);
 		addBonus(*bonus);
 		frame = 0;
@@ -201,25 +233,25 @@ void			Env::_genBonus( void ) {
 void			Env::_drawEntities( void ) const {
 	int i;
 
-	// Players
+	// Player
 	attron(COLOR_PAIR(2));
-	mvprintw(this->_player->getPosY(), this->_player->getPosX(), ">");
+		this->_player->draw();
 	attroff(COLOR_PAIR(2));
 
 	// Bullets
-	for (i = 0; this->_bullets[i]; i++)
-		mvprintw(this->_bullets[i]->getPosY(), this->_bullets[i]->getPosX(), "-");
+	for (i = 0; _bullets[i]; i++)
+		mvprintw(_bullets[i]->getPosY(), _bullets[i]->getPosX(), "-");
 
 	// Enemies
 	attron(COLOR_PAIR(3));
-	for (i = 0; this->_enemies[i]; i++)
-		mvprintw(this->_enemies[i]->getPosY(), this->_enemies[i]->getPosX(), "<");
+	for (i = 0; _enemies[i]; i++)
+		_enemies[i]->draw();
 	attroff(COLOR_PAIR(3));
 
 	// Bonus
 	attron(COLOR_PAIR(6));
-	for (i = 0; this->_bonus[i]; i++)
-		mvprintw(this->_bonus[i]->getPosY(), this->_bonus[i]->getPosX(), "$");
+	for (i = 0; _bonus[i]; i++)
+		_bonus[i]->draw();
 	attroff(COLOR_PAIR(6));
 
 }

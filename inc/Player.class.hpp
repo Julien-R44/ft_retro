@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/07 06:39:04 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 06:19:31 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 09:15:34 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ public:
 	void			getKilled(void);
 	void			incAmmo(int amount);
 	int				getAmmo(void) const;
+
+	virtual void	draw(void) const;
 
 	Player &		operator=( Player const & src );
 

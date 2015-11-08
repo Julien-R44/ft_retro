@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 18:01:39 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 08:16:09 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 11:45:47 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,17 @@
 # include "HUD.class.hpp"
 # include "Player.class.hpp"
 # include "Bonus.class.hpp"
+# include "BigShip.class.hpp"
 
+// LIMITS
 # define MAX_BULLETS 512
 # define MAX_ENEMIES 64
 # define MAX_BONUS 64
-# define MAP_LIMITS _hud.maxX, _hud.maxY, _hud.minX, _hud.minY
+# define MAP_LIMITS _hud.maxX, _hud.maxY+1, _hud.minX, _hud.minY
+
+// TIMERS
+# define REP_BONUS 500
+# define REP_ENEMY 10
 
 class Env {
 
@@ -67,6 +73,7 @@ private:
 	void				_initCurses( void );
 
 	// Update
+	void				_collisionsBonus( void );
 	void				_updateEntities( void );
 	void				_updateEnemies( void );
 

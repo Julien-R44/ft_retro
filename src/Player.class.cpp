@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/07 06:39:04 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 07:15:05 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 10:11:14 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ Player::Player( int posX, int posY ) :
 	_respawnX(posX),
 	_respawnY(posY)
 {
+	this->_draw = ">";
 	return ;
 }
 
@@ -50,4 +51,8 @@ void			Player::getKilled(void) {
 	}
 	this->_posX = this->_respawnX;
 	this->_posY = this->_respawnY;
+}
+
+void			Player::draw( void ) const {
+	mvprintw(_posY, _posX, _draw.c_str());
 }

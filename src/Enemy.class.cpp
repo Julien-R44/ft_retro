@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/07 04:16:46 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 06:08:15 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 08:41:35 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ Enemy::Enemy(int x, int y):
 	GameEntity(x-1, rand() % (y - 1) + 1),
 	_reloading(0)
 {
+	this->_draw = "<";
 	return ;
 }
 

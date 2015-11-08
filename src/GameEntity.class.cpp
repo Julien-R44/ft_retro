@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 19:16:43 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 07:26:44 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 08:47:51 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,14 @@ void				GameEntity::setDirXY( int x, int y ) {
 	this->_dirY = y;
 }
 
+void				GameEntity::draw(void) const {
+	mvprintw(_posY, _posX, _draw.c_str());
+}
+
 /*
 	- Getters
  */
+std::string 		GameEntity::getDraw( void ) const { return this->_draw; }
 int					GameEntity::getPosX( void ) const { return this->_posX; }
 int					GameEntity::getPosY( void ) const { return this->_posY; }
 int					GameEntity::getDirX( void ) const { return this->_dirX; }
