@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Timer.class.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/06 18:01:40 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 00:37:59 by jripoute         ###   ########.fr       */
+/*   Created: 2015/11/07 23:27:41 by jripoute          #+#    #+#             */
+/*   Updated: 2015/11/08 00:37:34 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <curses.h>
-#include "Env.class.hpp"
-#include "GameEntity.class.hpp"
-#include "Enemy.class.hpp"
-#include "Player.class.hpp"
-#include "HUD.class.hpp"
-#include "Timer.class.hpp"
-#include <time.h>
-#include <sys/time.h>
+#ifndef TIMER_CLASS_HPP
+# define TIMER_CLASS_HPP
 
+# include <time.h>
 
-int			main(void) {
-	Env		env;
+class Timer {
 
-	while (77) {
-		if (env.updateAll() == -1)
-			break ;
-	}
-	return (0);
+public:
+	Timer( void );
+	Timer(Timer const & src);
+	~Timer( void );
 
-  return 0;
-}
+	Timer &	operator=(Timer const & src);
+
+	void			restart();
+	double 			getElapsedTime(void) const;
+
+private:
+	time_t		_startTime;
+};
+
+#endif

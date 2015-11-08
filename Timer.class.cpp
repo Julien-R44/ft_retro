@@ -1,35 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Timer.class.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/06 18:01:40 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 00:37:59 by jripoute         ###   ########.fr       */
+/*   Created: 2015/11/07 23:27:38 by jripoute          #+#    #+#             */
+/*   Updated: 2015/11/08 00:37:47 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <curses.h>
-#include "Env.class.hpp"
-#include "GameEntity.class.hpp"
-#include "Enemy.class.hpp"
-#include "Player.class.hpp"
-#include "HUD.class.hpp"
 #include "Timer.class.hpp"
-#include <time.h>
-#include <sys/time.h>
 
+Timer::Timer(void) {
+	_startTime = time(NULL);
+}
 
-int			main(void) {
-	Env		env;
+Timer::Timer(Timer const & src) {
+	*this = src;
+}
 
-	while (77) {
-		if (env.updateAll() == -1)
-			break ;
-	}
-	return (0);
+Timer::~Timer(void) {
+}
 
-  return 0;
+Timer & 	Timer::operator=(Timer const & src) {
+	return *this;
+}
+
+double 		Timer::getElapsedTime( void ) const {
+	return (difftime(time(NULL),_startTime));
+}
+
+void			Timer::restart(void) {
+	_startTime = time(NULL);
 }

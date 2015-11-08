@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Env.class.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: y0ja <y0ja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 18:01:39 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/07 07:58:56 by y0ja             ###   ########.fr       */
+/*   Updated: 2015/11/08 04:51:50 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <iostream>
 # include <curses.h>
-# include "Logger.class.hpp"
 # include "GameEntity.class.hpp"
 # include "Enemy.class.hpp"
 # include "HUD.class.hpp"
@@ -56,10 +55,12 @@ private:
 	Player				*_player;
 	GameEntity			*_bullets[MAX_BULLETS];
 	Enemy				*_enemies[MAX_ENEMIES];
-	Logger				_logger;
 	clock_t				_oldTime;
 	clock_t				_newTime;
 	static const int 	_fps;
+
+	// Init
+	void				_initCurses( void );
 
 	// Update
 	void				_updateEntities( void );
@@ -67,7 +68,6 @@ private:
 
 	// Draw
 	void				_drawEntities( void ) const;
-	void				_drawCorners( void ) const;
 	void				_timeHandler( void ) const;
 
 	void				_genEnemy( void );

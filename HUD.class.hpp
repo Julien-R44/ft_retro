@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HUD.class.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: y0ja <y0ja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/07 06:52:10 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/07 08:03:18 by y0ja             ###   ########.fr       */
+/*   Updated: 2015/11/08 02:17:12 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define HUD_CLASS_HPP
 
 # include "Player.class.hpp"
-
+# include "Timer.class.hpp"
+# include <iostream>
 # include <curses.h>
 
 class HUD {
@@ -24,28 +25,45 @@ public:
 	HUD(HUD const & src);
 	~HUD();
 
-	void	displayInfo(Player & player) const;
-	int		getMapOffsetX(void) const;
-	int		getMapOffsetY(void) const;
+	int				getMapOffsetX(void) const;
+	int				getMapOffsetY(void) const;
+	void			displayHUD( Player & player ) const;
 
-	HUD &		operator=( HUD const & src );
+	HUD &			operator=( HUD const & src );
 
-	int		maxX;
-	int		maxY;
-	int		minX;
-	int		minY;
-	int		mapX;
-	int		mapY;
+	int				maxX;
+	int				maxY;
+	int				minX;
+	int				minY;
+	int				mapX;
+	int				mapY;
 
 private:
-	int		_mapOffsetX;
-	int		_mapOffsetY;
+	void			_drawSquare(int x, int y, int offx, int offy) const;
+	void			_displayInfo(Player & player) const;
+	void			_displayBar(Player & player) const;
 
-	int		_tabOffsetX;
-	int		_tabOffsetY;
 
-	int		_tabSizeX;
-	int		_tabSizeY;
+	Timer			_timer;
+
+	int				_mapOffsetX;
+	int				_mapOffsetY;
+
+
+	// TAB
+	int				_tabOffsetX;
+	int				_tabOffsetY;
+
+	int				_tabSizeX;
+	int				_tabSizeY;
+
+
+	// BAR
+	int				_barOffsetX;
+	int				_barOffsetY;
+
+	int				_barSizeX;
+	int				_barSizeY;
 
 };
 

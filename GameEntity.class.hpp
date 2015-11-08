@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GameEntity.class.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: y0ja <y0ja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 19:16:47 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/07 07:25:10 by y0ja             ###   ########.fr       */
+/*   Updated: 2015/11/08 04:28:19 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ public:
 	~GameEntity( void );
 
 	void			setMaxMinXY( int maxx, int maxy, int minx, int miny );
+	// void			setDirXY( int x, int y );
 
 	int				incPosXY( int x, int y );
 	int				setPosXY( int x, int y );
@@ -28,17 +29,27 @@ public:
 	int				getPosX( void ) const ;
 	int				getPosY( void ) const ;
 
+	int				getDirX( void ) const ;
+	int				getDirY( void ) const ;
+
 	GameEntity &	operator=( GameEntity const & src );
 
 protected:
+	// Actual pos
 	int			_posX;
 	int			_posY;
 
+	// Min Coords Allowed
 	int			_minX;
 	int			_minY;
 
+	// Max Coords Allowed
 	int			_maxX;
 	int			_maxY;
+
+	// Deplacement Vector2d
+	int			_dirX;
+	int			_dirY;
 
 };
 
