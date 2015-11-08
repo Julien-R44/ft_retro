@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 19:16:47 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 04:28:19 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 04:56:07 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ public:
 	~GameEntity( void );
 
 	void			setMaxMinXY( int maxx, int maxy, int minx, int miny );
-	// void			setDirXY( int x, int y );
+	void			setDirXY( int x, int y );
 
 	int				incPosXY( int x, int y );
 	int				setPosXY( int x, int y );

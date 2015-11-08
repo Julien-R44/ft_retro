@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   Enemy.class.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: y0ja <y0ja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/07 04:16:46 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/07 06:41:11 by y0ja             ###   ########.fr       */
+/*   Updated: 2015/11/08 05:57:30 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Enemy.class.hpp"
 
-Enemy::Enemy(int x, int y): GameEntity(x-1, rand() % (y - 1) + 1) {
-// Enemy::Enemy(int x, int y): GameEntity(10, 5) {
-	// (void)x;
-	// (void)y;
-	// this->setPosXY(10, 5);
+Enemy::Enemy(int x, int y):
+	GameEntity(x-1, rand() % (y - 1) + 1),
+	_reloading(0)
+{
 	return ;
 }
 
@@ -32,3 +31,20 @@ Enemy &		Enemy::operator=( Enemy const & src ) {
 	GameEntity::operator=(src);
 	return *this;
 }
+
+GameEntity & Enemy::shoot(int maxX, int maxY , int minX, int minY) const {
+	GameEntity *bullet = new GameEntity(this->_posX-2, this->_posY);
+	bullet->setDirXY(-1, 0);
+	return *bullet;
+}
+
+bool		Enemy::reload( void ) {
+	_reloading++;
+	if (_reloading == Enemy::_reloadTime) {
+		_reloading = 0;
+		return true;
+	}
+	return false;
+}
+
+const int	Enemy::_reloadTime = 50;

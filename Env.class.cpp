@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 18:01:14 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 04:50:48 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 05:59:54 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ Env::Env(void) : _hud(100, 10) {
 	// ADD PLAYER
 	Player *player = new Player(_hud.minX + 4, _hud.maxY / 2);
 	player->setMaxMinXY(_hud.maxX, _hud.maxY, _hud.minX, _hud.minY);
-	this->addPlayer(*player);
+	this->_player = player;
 	return ;
 }
 
@@ -71,11 +71,6 @@ void			Env::addBullet( GameEntity & entity ) {
 	while (this->_bullets[i]) i++;
 	this->_bullets[i] = &entity;
 }
-
-void			Env::addPlayer( Player & entity ) {
-	this->_player = &entity;
-}
-
 int				Env::updateAll( void ) {
 	this->_oldTime = clock();
 	this->_hud.displayHUD(*this->_player);
@@ -97,9 +92,8 @@ void			Env::_updateEntities( void ) {
 	for (int i = 0, j = 0; _bullets[i]; i++) {
 
 		// If bullet in the wall, then delete it and shift array
-		if (_bullets[i]->incPosXY(1, 0) == -1) {
-			delete _bullets[i];
-			_bullets[i] = NULL;
+		if (_bullets[i]->incPosXY(_bullets[i]->getDirX(), _bullets[i]->getDirY()) == -1) {
+			delete _bullets[i]; _bullets[i] = NULL;
 			for (j = i; _bullets[j+1]; j++) { _bullets[j] = _bullets[j+1]; }
 			_bullets[j] = NULL;
 			return ;
@@ -107,14 +101,10 @@ void			Env::_updateEntities( void ) {
 
 		// Check collision
 		for (int k = 0, l = 0; _enemies[k]; k++) {
-			if (_bullets[i]->getPosX() == _enemies[k]->getPosX()
-			&& _bullets[i]->getPosY() == _enemies[k]->getPosY())
+			if (_bullets[i]->getPosX() == _enemies[k]->getPosX() && _bullets[i]->getPosY() == _enemies[k]->getPosY())
 			{
-				delete _enemies[k];
-				_enemies[k] = NULL;
-				for (l = k; _enemies[l+1]; l++) {
-					_enemies[l] = _enemies[l+1];
-				}
+				delete _enemies[k];	_enemies[k] = NULL;
+				for (l = k; _enemies[l+1]; l++) { _enemies[l] = _enemies[l+1]; }
 				_enemies[l] = NULL;
 				_player->kills++;
 			}
@@ -133,6 +123,13 @@ void			Env::_updateEnemies( void ) {
 		vecx = -1;
 
 	for (int i = 0, j = 0; this->_enemies[i]; i++) {
+
+		// Reload
+		if (_enemies[i]->reload() == true) {
+				GameEntity & bullet = _enemies[i]->shoot(MAP_LIMITS);
+				bullet.setMaxMinXY(MAP_LIMITS);
+				addBullet(bullet);
+		}
 
 		if (this->_enemies[i]->getPosX() == this->_player->getPosX() && this->_enemies[i]->getPosY() == this->_player->getPosY())
 				this->_player->getKilled();
@@ -208,7 +205,8 @@ int				Env::_keyHook(void) {
 		else if (ch == K_SPACE) {
 
 			GameEntity *bullet = new GameEntity(this->_player->getPosX()+1, this->_player->getPosY());
-			bullet->setMaxMinXY(_hud.maxX, _hud.maxY, _hud.minX, _hud.minY);
+			bullet->setMaxMinXY(MAP_LIMITS);
+			bullet->setDirXY(1, 0);
 			addBullet(*bullet);
 			this->_player->shoots++;
 		}

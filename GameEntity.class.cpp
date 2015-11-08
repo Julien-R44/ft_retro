@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 19:16:43 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 04:28:35 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 04:57:40 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,10 @@ int					GameEntity::setPosXY(int x, int y) {
 	return (0);
 }
 
-// int					GameEntity::setDirXY( int x, int y ) {
-// 	this->_dirX = x;
-// 	this->_dirY = y;
-// 	return (0);
-// }
+void				GameEntity::setDirXY( int x, int y ) {
+	this->_dirX = x;
+	this->_dirY = y;
+}
 
 /*
 	- Getters

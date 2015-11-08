@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 18:01:39 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 04:51:50 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 05:24:32 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 # define MAX_BULLETS 512
 # define MAX_ENEMIES 64
+# define MAP_LIMITS _hud.maxX, _hud.maxY, _hud.minX, _hud.minY
 
 class Env {
 
@@ -44,7 +45,6 @@ public:
 
 
 	void				addEnemy( Enemy & enemy );
-	void				addPlayer( Player & entity );
 	void				addBullet( GameEntity & entity );
 	int					updateAll( void );
 
