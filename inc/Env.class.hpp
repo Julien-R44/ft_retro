@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 18:01:39 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 06:12:21 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 08:16:09 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@
 # include "Enemy.class.hpp"
 # include "HUD.class.hpp"
 # include "Player.class.hpp"
+# include "Bonus.class.hpp"
 
 # define MAX_BULLETS 512
 # define MAX_ENEMIES 64
-# define MAP_LIMITS _hud.maxX, _hud.maxY+1, _hud.minX, _hud.minY
+# define MAX_BONUS 64
+# define MAP_LIMITS _hud.maxX, _hud.maxY, _hud.minX, _hud.minY
 
 class Env {
 
@@ -44,6 +46,7 @@ public:
 	~Env( void );
 
 
+	void				addBonus( Bonus & bonus );
 	void				addEnemy( Enemy & enemy );
 	void				addBullet( GameEntity & entity );
 	int					updateAll( void );
@@ -53,6 +56,7 @@ public:
 private:
 	HUD					_hud;
 	Player				*_player;
+	Bonus				*_bonus[MAX_BONUS];
 	GameEntity			*_bullets[MAX_BULLETS];
 	Enemy				*_enemies[MAX_ENEMIES];
 	clock_t				_oldTime;
@@ -70,6 +74,7 @@ private:
 	void				_drawEntities( void ) const;
 	void				_timeHandler( void ) const;
 
+	void				_genBonus( void );
 	void				_genEnemy( void );
 	int					_keyHook( void );
 };

@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 18:01:14 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 07:14:37 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 08:21:20 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ Env::Env(void) : _hud(100, 10) {
 	// Arrays inits
 	for (int i = 0; i < MAX_ENEMIES; i++) { this->_enemies[i] = 0; }
 	for (int i = 0; i < MAX_BULLETS; i++) { this->_bullets[i] = 0; }
+	for (int i = 0; i < MAX_BONUS; i++) { this->_bonus[i] = 0; }
 	// ADD PLAYER
 	Player *player = new Player(_hud.minX + 4, _hud.maxY / 2);
 	player->setMaxMinXY(_hud.maxX, _hud.maxY, _hud.minX, _hud.minY);
@@ -58,10 +59,16 @@ void			Env::_initCurses(void) {
 	init_pair(3, COLOR_RED, 0);
 	init_pair(4, 0, COLOR_WHITE);
 	init_pair(5, 0, COLOR_RED);
+	init_pair(6, COLOR_GREEN, 0);
 }
 
 
 /* PUBLICS METHODS */
+void			Env::addBonus( Bonus & bonus ) {
+	int i = 0;
+	while (this->_bonus[i]) i++;
+	this->_bonus[i] = &bonus;
+}
 void			Env::addEnemy( Enemy & enemy ) {
 	int i = 0;
 	while (this->_enemies[i]) i++;
@@ -76,6 +83,7 @@ int				Env::updateAll( void ) {
 	this->_oldTime = clock();
 	this->_hud.displayHUD(*this->_player);
 	this->_genEnemy();
+	// this->_genBonus();
 	this->_updateEntities();
 	this->_updateEnemies();
 	this->_drawEntities();
@@ -141,9 +149,11 @@ void			Env::_updateEnemies( void ) {
 				addBullet(bullet);
 		}
 
+		// enemy in player
 		if (this->_enemies[i]->getPosX() == this->_player->getPosX() && this->_enemies[i]->getPosY() == this->_player->getPosY())
 				this->_player->getKilled();
 
+		// inc vec
 		if (this->_enemies[i]->incPosXY(vecx, 0) == -1) {
 			delete this->_enemies[i];
 			this->_enemies[i] = NULL;
@@ -174,18 +184,44 @@ void			Env::_genEnemy( void ) {
 	}
 }
 
+void			Env::_genBonus( void ) {
+	static int frame = 0;
+	frame++;
+
+	if (frame == 20) {
+		Bonus *bonus = new Bonus(
+			rand() % (_hud.maxX - _hud.minX) + _hud.minX,
+			rand() % (_hud.maxY - _hud.minY) + _hud.minY
+		);
+		addBonus(*bonus);
+		frame = 0;
+	}
+}
+
 void			Env::_drawEntities( void ) const {
 	int i;
 
+	// Players
 	attron(COLOR_PAIR(2));
 	mvprintw(this->_player->getPosY(), this->_player->getPosX(), ">");
 	attroff(COLOR_PAIR(2));
+
+	// Bullets
 	for (i = 0; this->_bullets[i]; i++)
 		mvprintw(this->_bullets[i]->getPosY(), this->_bullets[i]->getPosX(), "-");
+
+	// Enemies
 	attron(COLOR_PAIR(3));
 	for (i = 0; this->_enemies[i]; i++)
 		mvprintw(this->_enemies[i]->getPosY(), this->_enemies[i]->getPosX(), "<");
 	attroff(COLOR_PAIR(3));
+
+	// Bonus
+	attron(COLOR_PAIR(6));
+	for (i = 0; this->_bonus[i]; i++)
+		mvprintw(this->_bonus[i]->getPosY(), this->_bonus[i]->getPosX(), "$");
+	attroff(COLOR_PAIR(6));
+
 }
 
 void			Env::_timeHandler(void) const {
@@ -222,8 +258,6 @@ int				Env::_keyHook(void) {
 		}
 		else if (ch == ECHAP)
 			return (-1);
-		// else if (ch == K_ONE)
-		// 	this->_player->health -= 25;
 	}
 	return (0);
 }

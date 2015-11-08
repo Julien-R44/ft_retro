@@ -1,17 +1,21 @@
 NAME = ft_retro
-CFLAGS = -Wall -Wextra -Werror
-SRCS = Env.class.cpp \
-			GameEntity.class.cpp \
-			Enemy.class.cpp \
-			Player.class.cpp \
-			HUD.class.cpp \
-			Timer.class.cpp \
-			main.cpp
+FLAGS = -Wall -Wextra -Werror
+SRCS = 		src/Env.class.cpp \
+			src/GameEntity.class.cpp \
+			src/Enemy.class.cpp \
+			src/Player.class.cpp \
+			src/HUD.class.cpp \
+			src/Timer.class.cpp \
+			src/Bonus.class.cpp \
+			src/BigShip.class.cpp \
+			src/main.cpp
+
+INC = -I./inc
 
 all: make
 
 make:
-	g++ $(FLAGS) $(SRCS) -lncurses -o $(NAME)
+	clang++ $(NOFLAGS) $(SRCS) -I./inc/ -lncurses -o $(NAME)
 
 re: all
 
