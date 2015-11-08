@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 18:01:40 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 13:48:07 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 13:49:44 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void		drawLogo(void) {
 	mvprintw(0+9, 60, "Press a key to play.");
 }
 
-void		principalMenu(void) {
+void		mainMenu(void) {
 	int x, y, ch;
 
 	getmaxyx(stdscr, y, x);
@@ -60,7 +60,7 @@ void		principalMenu(void) {
 int			main(void) {
 	Env		env;
 
-	principalMenu();
+	mainMenu();
 	while (77) {
 		if (env.updateAll() == -1)
 			break ;
