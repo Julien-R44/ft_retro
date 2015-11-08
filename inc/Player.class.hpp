@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/07 06:39:04 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 09:15:34 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 13:25:35 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ public:
 
 	Player &		operator=( Player const & src );
 
+	int			money;
 	int			health;
 	int			life;
 	int			shoots;

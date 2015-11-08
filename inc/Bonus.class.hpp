@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/08 08:07:10 by jripoute          #+#    #+#             */
-/*   Updated: 2015/11/08 11:33:25 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 11:49:47 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ public:
 	int				getBonusType(void) const;
 
 private:
-	Timer			_timer;
 	int				_bonusType;
 	static int		_nbInstance;
 };

@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 18:01:14 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 11:45:40 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 13:29:32 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,6 @@ void			Env::_collisionsBonus( void ) {
 	for (int i = 0, j = 0; _bonus[i]; i++) {
 		if (_player->getPosX() == _bonus[i]->getPosX() && _player->getPosY() == _bonus[i]->getPosY()) {
 
-			// Get time of bon
-
 			// Assign Bonus
 			bonusType = _bonus[i]->getBonusType();
 			if ( bonusType == B_LIFE)
@@ -115,7 +113,7 @@ void			Env::_collisionsBonus( void ) {
 			else if ( bonusType == B_HEAL )
 				_player->health = _player->health + 20 > 100 ? 100 : _player->health + 20;
 			else if ( bonusType == B_MONEY )
-				;
+				_player->money += 10;
 
 			// Delete Bonus
 			delete _bonus[i]; _bonus[i] = NULL;
@@ -222,7 +220,7 @@ void			Env::_genBonus( void ) {
 	if (frame == REP_BONUS && Bonus::getNbInstance() < 4) {
 		Bonus *bonus = new Bonus(
 			rand_a_b(_hud.minX, _hud.maxX),
-			rand_a_b(_hud.minY, _hud.maxY),
+			rand_a_b(_hud.minY+1, _hud.maxY),
 			rand_a_b(1, 4)
 		);
 		addBonus(*bonus);

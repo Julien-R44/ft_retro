@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/07 06:52:10 by y0ja              #+#    #+#             */
-/*   Updated: 2015/11/08 10:52:58 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/11/08 13:27:17 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,13 @@ void			HUD::_displayInfo(Player & player) const {
 	double killPerShoot = 0;
 
 	attron(COLOR_PAIR(4));
-	_drawSquare(20, 10, 2, 1);
+	_drawSquare(20, 12, 2, 1);
 	attroff(COLOR_PAIR(4));
 	mvprintw(this->_tabOffsetY + 1, this->_tabOffsetX + 2, "Life left: %d", player.life);
 	mvprintw(this->_tabOffsetY + 3, this->_tabOffsetX + 2, "Kills: %d", player.kills);
 	mvprintw(this->_tabOffsetY + 5, this->_tabOffsetX + 2, "Shoots: %d", player.shoots);
-	mvprintw(this->_tabOffsetY + 7, this->_tabOffsetX + 2, "Time: %0.f sec.", _timer.getElapsedTime());
+	mvprintw(this->_tabOffsetY + 7, this->_tabOffsetX + 2, "Money: %d$", player.money);
+	mvprintw(this->_tabOffsetY + 9, this->_tabOffsetX + 2, "Time: %0.f sec.", _timer.getElapsedTime());
 }
 
 void			HUD::_displayBar(Player & player) const {
